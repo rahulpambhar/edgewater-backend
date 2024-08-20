@@ -14,7 +14,7 @@ async function setupWebSocket(server: http.Server) {
 
     io.on('connection', (socket: Socket) => {
 
-        let ws = new WebSocket('wss://ws-feed.pro.coinbase.com');
+        let ws = new WebSocket(process.env.COINBASE_URL || 'wss://ws-feed.pro.coinbase.com');
 
         ws.on('open', () => {
             console.log('WebSocket connection opened to Coinbase.');
@@ -31,9 +31,9 @@ async function setupWebSocket(server: http.Server) {
                 console.log('WebSocket is not open yet. Queuing the subscription.');
             }
 
-        });''
+        }); ''
         socket.on('unsubscribe', (message) => {
-            
+
             if (ws.readyState === WebSocket.OPEN) {
                 ws.send(JSON.stringify({
                     type: message.type,
