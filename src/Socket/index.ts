@@ -24,14 +24,20 @@ async function setupWebSocket(server: http.Server) {
 
             if (ws.readyState === WebSocket.OPEN) {
                 ws.send(JSON.stringify({
-                    type: "subscribe",
+                    type: message.type,
                     channels: message?.channels,
                 }));
+                socket.emit('success-response', {
+                    message: 'Subscription successful',
+                });
             } else {
-                console.log('WebSocket is not open yet. Queuing the subscription.');
+                socket.emit('error-response', {
+                    message: 'WebSocket is not open yet. Queuing the subscription.',
+                });
             }
 
-        }); ''
+        });
+
         socket.on('unsubscribe', (message) => {
 
             if (ws.readyState === WebSocket.OPEN) {
@@ -39,8 +45,13 @@ async function setupWebSocket(server: http.Server) {
                     type: message.type,
                     channels: message?.channels,
                 }));
+                socket.emit('success-response', {
+                    message: 'Product unSubscription successful',
+                });
             } else {
-                console.log('WebSocket is not open yet. Queuing the subscription.');
+                socket.emit('error-response', {
+                    message: 'Product unSubscription goes wrong',
+                });
             }
 
         });
