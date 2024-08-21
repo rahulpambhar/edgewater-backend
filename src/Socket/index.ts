@@ -20,6 +20,7 @@ async function setupWebSocket(server: http.Server) {
             console.log('WebSocket connection opened to Coinbase.');
         });
 
+        // setup subscription
         socket.on('subscribe', (message) => {
 
             if (ws.readyState === WebSocket.OPEN) {
@@ -38,6 +39,7 @@ async function setupWebSocket(server: http.Server) {
 
         });
 
+        // setup unsubscribe
         socket.on('unsubscribe', (message) => {
 
             if (ws.readyState === WebSocket.OPEN) {
@@ -56,6 +58,7 @@ async function setupWebSocket(server: http.Server) {
 
         });
 
+        // setup ticker
         if (ws) {
             ws.onmessage = (event: any) => {
                 const data = JSON.parse(event.data);
