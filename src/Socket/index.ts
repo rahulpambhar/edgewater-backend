@@ -26,9 +26,17 @@ async function setupWebSocket(server: http.Server) {
                 ws.send(JSON.stringify({
                     type: message.type,
                     channels: message?.channels,
-                }));
-                socket.emit('success-response', {
-                    message: 'Subscription successful',
+                }), (error) => {
+                    if (error) {
+                        socket.emit('error-response', {
+                            message: 'Subscription goes wrong',
+                        });
+                    }
+                    if (!error) {
+                        socket.emit('success-response', {
+                            message: 'Subscription successful',
+                        });
+                    }
                 });
             } else {
                 socket.emit('error-response', {
@@ -45,10 +53,19 @@ async function setupWebSocket(server: http.Server) {
                 ws.send(JSON.stringify({
                     type: message.type,
                     channels: message?.channels,
-                }));
-                socket.emit('success-response', {
-                    message: 'Product unSubscription successful',
+                }), (error) => {
+                    if (error) {
+                        socket.emit('error-response', {
+                            message: 'UnSubscription goes wrong',
+                        });
+                    }
+                    if (!error) {
+                        socket.emit('success-response', {
+                            message: 'UnSubscription successful',
+                        });
+                    }
                 });
+
             } else {
                 socket.emit('error-response', {
                     message: 'Product unSubscription goes wrong',
@@ -62,7 +79,9 @@ async function setupWebSocket(server: http.Server) {
             ws.onmessage = (event: any) => {
                 const data = JSON.parse(event.data);
                 if (data.type === "ticker") {
-                    socket.emit('ticker', data);
+                    socket.emit('ticker', data, (error: any) => {
+                        console.log(error);
+                    });
                 }
             };
         }
