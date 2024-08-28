@@ -1,6 +1,6 @@
 import { Server, Socket } from "socket.io";
 import http from "http";
-const WebSocket = require('ws');
+import WebSocket from "ws";
 
 // setup websocket server
 async function setupWebSocket(server: http.Server) {
@@ -14,7 +14,7 @@ async function setupWebSocket(server: http.Server) {
 
     io.on('connection', (socket: Socket) => {
 
-        let ws = new WebSocket(process.env.COINBASE_URL || 'wss://ws-feed.pro.coinbase.com');
+        let ws = new WebSocket('wss://ws-feed.pro.coinbase.com');
 
         ws.on('open', () => {
             console.log('WebSocket connection opened to Coinbase.');
@@ -22,7 +22,6 @@ async function setupWebSocket(server: http.Server) {
 
         // setup subscription
         socket.on('subscribe', (message) => {
-
             if (ws.readyState === WebSocket.OPEN) {
                 ws.send(JSON.stringify({
                     type: message.type,
