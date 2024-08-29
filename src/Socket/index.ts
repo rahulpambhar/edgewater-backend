@@ -13,7 +13,7 @@ async function setupWebSocket(server: http.Server) {
     });
 
     io.on('connection', (socket: Socket) => {
-
+        
         let ws = new WebSocket('wss://ws-feed.pro.coinbase.com');
 
         ws.on('open', () => {
@@ -71,7 +71,6 @@ async function setupWebSocket(server: http.Server) {
                     message: 'Product unSubscription goes wrong',
                 });
             }
-
         });
 
         // setup ticker
