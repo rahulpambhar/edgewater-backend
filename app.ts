@@ -9,6 +9,7 @@ import path from "path";
 import morgan from "morgan";
 import { createStream } from "rotating-file-stream";
 import setupWebSocket from "./src/Socket";
+import routes from './src/routes/Auth';
 
 dotenv.config();
 
@@ -34,6 +35,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 const server = http.createServer(app);
 setupWebSocket(server);
 
+
+app.use('/api', routes);
 app.use('*', (req, res) => { res.status(statusCodes.OK).send({ st: 'true' }) });
 
 server.listen(port, () => {
